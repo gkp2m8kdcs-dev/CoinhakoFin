@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="CoinhakoFin — A privacy-first personal finance and wealth tracker. Manage budgets, track investments, scan receipts, and grow your wealth with confidence." />
+<title>CoinhakoFin — Personal Finance & Wealth Tracker</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg-primary: #0a0e1a;
+    --bg-secondary: #131829;
+    --bg-card: #1a2138;
+    --accent: #f0b90b;
+    --accent-hover: #d4a30a;
+    --text-primary: #ffffff;
+    --text-secondary: #a0a8b8;
+    --text-muted: #6b7280;
+    --border: #2a3148;
+    --gradient: linear-gradient(135deg, #f0b90b 0%, #f8d33a 100%);
+  }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  /* Navigation */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background: rgba(10, 14, 26, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    padding: 1rem 2rem;
+  }
+  .nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+    align-items: center;
+  }
+  .nav-links a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+  .nav-cta {
+    background: var(--gradient);
+    color: #0a0e1a !important;
+    padding: 0.5rem 1.25rem;
+    border-radius: 8px;
+    font-weight: 600;
+    -webkit-text-fill-color: #0a0e1a;
+  }
+  .nav-cta:hover { color: #0a0e1a !important; opacity: 0.9; }
+
+  /* Hero */
+  .hero {
+    padding: 8rem 2rem 5rem;
+    text-align: center;
+    background: radial-gradient(ellipse at top, rgba(240, 185, 11, 0.08) 0%, transparent 60%);
+  }
+  .hero h1 {
+    font-size: clamp(2.25rem, 5vw, 4rem);
+    font-weight: 800;
+    line-height: 1.15;
+    margin-bottom: 1.25rem;
+    letter-spacing: -0.02em;
+  }
+  .hero h1 .accent {
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero p {
+    font-size: 1.15rem;
+    color: var(--text-secondary);
+    max-width: 720px;
+    margin: 0 auto 2.5rem;
+  }
+  .hero-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .btn {
+    display: inline-block;
+    padding: 0.875rem 2rem;
+    border-radius: 10px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: transform 0.2s, opacity 0.2s;
+    font-size: 1rem;
+    border: none;
+    cursor: pointer;
+  }
+  .btn-primary {
+    background: var(--gradient);
+    color: #0a0e1a;
+  }
+  .btn-primary:hover { transform: translateY(-2px); opacity: 0.92; }
+  .btn-secondary {
+    background: transparent;
+    color: var(--text-primary);
+    border: 1px solid var(--border);
+  }
+  .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* Sections */
+  section {
+    padding: 5rem 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .section-header {
+    text-align: center;
+    margin-bottom: 3.5rem;
+  }
+  .section-tag {
+    display: inline-block;
+    color: var(--accent);
+    font-size: 0.875rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+  }
+  .section-header h2 {
+    font-size: clamp(1.875rem, 4vw, 2.75rem);
+    font-weight: 700;
+    margin-bottom: 1rem;
+    letter-spacing: -0.01em;
+  }
+  .section-header p {
+    color: var(--text-secondary);
+    max-width: 640px;
+    margin: 0 auto;
+    font-size: 1.05rem;
+  }
+
+  /* Features Grid */
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+  .feature-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 2rem;
+    transition: transform 0.25s, border-color 0.25s;
+  }
+  .feature-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--accent);
+  }
+  .feature-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: rgba(240, 185, 11, 0.12);
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    margin-bottom: 1.25rem;
+    font-weight: 700;
+  }
+  .feature-card h3 {
+    font-size: 1.25rem;
+    margin-bottom: 0.75rem;
+    font-weight: 600;
+  }
+  .feature-card p {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+  }
+
+  /* Privacy Banner */
+  .privacy-banner {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 3rem 2.5rem;
+    text-align: center;
+    margin: 2rem auto;
+    max-width: 900px;
+  }
+  .privacy-banner h2 { font-size: 2rem; margin-bottom: 1rem; }
+  .privacy-banner p {
+    color: var(--text-secondary);
+    font-size: 1.05rem;
+    max-width: 640px;
+    margin: 0 auto 1.5rem;
+  }
+  .privacy-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    justify-content: center;
+  }
+  .pill {
+    background: rgba(240, 185, 11, 0.1);
+    border: 1px solid rgba(240, 185, 11, 0.3);
+    color: var(--accent);
+    padding: 0.5rem 1rem;
+    border-radius: 999px;
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+
+  /* Footer */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 3rem 2rem 2rem;
+    background: var(--bg-secondary);
+  }
+  .footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 3rem;
+  }
+  .footer-brand .logo { margin-bottom: 1rem; display: inline-block; }
+  .footer-brand p {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    max-width: 320px;
+  }
+  .footer-col h4 {
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+  }
+  .footer-col ul { list-style: none; }
+  .footer-col li { margin-bottom: 0.5rem; }
+  .footer-col a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.2s;
+  }
+  .footer-col a:hover { color: var(--accent); }
+  .footer-bottom {
+    max-width: 1200px;
+    margin: 2.5rem auto 0;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    text-align: center;
+  }
+
+  @media (max-width: 768px) {
+    .nav-links li:not(:last-child) { display: none; }
+    .footer-container { grid-template-columns: 1fr; gap: 2rem; }
+    .hero { padding: 6rem 1.5rem 3.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-container">
+    <div class="logo">CoinhakoFin</div>
+    <ul class="nav-links">
+      <li><a href="#features">Features</a></li>
+      <li><a href="#privacy">Privacy</a></li>
+      <li><a href="#support">Support</a></li>
+      <li><a href="privacy.html">Legal</a></li>
+      <li><a href="#download" class="nav-cta">Get the App</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero">
+  <h1>Your Money.<br /><span class="accent">Your Wealth.</span> Your Way.</h1>
+  <p>CoinhakoFin is a privacy-first personal finance and wealth tracker built for serious investors. Unify budgeting, spending, and multi-asset portfolio tracking in one elegant experience — fully offline, fully yours.</p>
+  <div class="hero-buttons">
+    <a href="#download" class="btn btn-primary">Download CoinhakoFin</a>
+    <a href="#features" class="btn btn-secondary">Explore Features</a>
+  </div>
+</header>
+
+<section id="features">
+  <div class="section-header">
+    <span class="section-tag">Capabilities</span>
+    <h2>Everything you need to grow your wealth</h2>
+    <p>From daily spending to long-term portfolio performance — one app for your entire financial life.</p>
+  </div>
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon">$</div>
+      <h3>Unified Net Worth</h3>
+      <p>Track checking, savings, credit cards, cash, digital wallets, and brokerage accounts in one real-time dashboard.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">◐</div>
+      <h3>Smart Budgets</h3>
+      <p>Set category-based monthly budgets and visualize your spending with cash-flow charts and breakdowns.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">↑</div>
+      <h3>Savings Goals</h3>
+      <p>Build goals toward major milestones and watch your progress with clear, motivating analytics.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">◈</div>
+      <h3>Portfolio Journal</h3>
+      <p>Log stocks, ETFs, mutual funds, bonds, and crypto. Track cost basis, P/L, and total return on every holding.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">◎</div>
+      <h3>Receipt OCR</h3>
+      <p>Capture receipts with your camera. On-device OCR extracts merchant, amount, and date automatically.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">⇌</div>
+      <h3>27-Currency Converter</h3>
+      <p>Built-in financial toolkit: tip calculator, loan amortization, discount math, and savings planner.</p>
+    </div>
+  </div>
+</section>
+
+<section id="privacy">
+  <div class="privacy-banner">
+    <h2>Privacy is not a feature. It's the foundation.</h2>
+    <p>CoinhakoFin requires no account, no login, and no internet connection. Every byte of your data lives on your device — nothing is ever uploaded, shared, or sold.</p>
+    <div class="privacy-pills">
+      <span class="pill">No Account</span>
+      <span class="pill">No Tracking</span>
+      <span class="pill">No Ads</span>
+      <span class="pill">Works Offline</span>
+      <span class="pill">On-Device OCR</span>
+      <span class="pill">Local Storage</span>
+    </div>
+  </div>
+</section>
+
+<section id="support">
+  <div class="section-header">
+    <span class="section-tag">Support</span>
+    <h2>We're here to help</h2>
+    <p>Questions, feedback, or feature requests? Reach our team directly.</p>
+  </div>
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon">@</div>
+      <h3>Email Support</h3>
+      <p>Our support team typically responds within 24–48 hours on business days.</p>
+      <p style="margin-top: 1rem;"><a href="mailto:Mefepzavap@icloud.com" style="color: var(--accent); text-decoration: none; font-weight: 600;">Mefepzavap@icloud.com</a></p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">?</div>
+      <h3>Frequently Asked</h3>
+      <p>Where is my data stored?<br /><span style="color: var(--text-muted);">Exclusively on your device. Nothing is uploaded.</span></p>
+      <p style="margin-top: 0.75rem;">Can I export my data?<br /><span style="color: var(--text-muted);">Yes — CSV or JSON, anytime.</span></p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">⤓</div>
+      <h3>Backup &amp; Restore</h3>
+      <p>Export your complete records with one tap and restore from backup whenever you switch devices.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-container">
+    <div class="footer-brand">
+      <span class="logo">CoinhakoFin</span>
+      <p>Privacy-first personal finance and wealth tracking. Built for serious investors who value clarity, control, and ownership of their data.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Product</h4>
+      <ul>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#privacy">Privacy</a></li>
+        <li><a href="#download">Download</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Legal &amp; Support</h4>
+      <ul>
+        <li><a href="privacy.html">Privacy Policy</a></li>
+        <li><a href="privacy.html#terms">Terms of Use</a></li>
+        <li><a href="privacy.html#support">Support</a></li>
+        <li><a href="mailto:Mefepzavap@icloud.com">Mefepzavap@icloud.com</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    &copy; 2026 CoinhakoFin. All rights reserved.
+  </div>
+</footer>
+
+</body>
+</html>
